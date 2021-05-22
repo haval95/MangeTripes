@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
+import { useHistory } from "react-router";
 import axios from "axios";
 export default function Trips() {
   const [state, setState] = useState({ trips: [], loading: true });
-
+  const history = useHistory();
   const populateTripsData = () => {
     axios.get("api/Trips/getAll").then((result) => {
       const response = result.data;
@@ -12,6 +13,10 @@ export default function Trips() {
   useEffect(() => {
     populateTripsData();
   }, []);
+
+  const handleEdit = (id) => {
+    history.push(`/update/${id}`);
+  };
 
   const showAllTrips = (trips) => {
     return (
@@ -29,13 +34,20 @@ export default function Trips() {
               <tr key={trip.id}>
                 <td>{trip.name}</td>
                 <td>{trip.description}</td>
-                <td>{new Date(trip.dateStarted).toLocaleDateString()}</td>
+                <td>{new Date(trip.dateStarted).toISOString().slice(0, 10)}</td>
                 <td>
                   {trip.dateCompleted
-                    ? new Date(trip.dateComplete).toLocaleDateString()
+                    ? new Date(trip.dateCompleted).toISOString().slice(0, 10)
                     : "-"}
                 </td>
-                <td>-</td>
+                <td>
+                  <button
+                    className="btn btn-success"
+                    onClick={() => handleEdit(trip.id)}
+                  >
+                    Edit
+                  </button>
+                </td>
               </tr>
             );
           })}
