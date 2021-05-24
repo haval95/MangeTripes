@@ -1,34 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router";
 import axios from "axios";
-export default function Trips() {
-  const [state, setState] = useState({
-    trips: [],
-    loading: true,
-    error: "",
-    failed: true,
-  });
-  const history = useHistory();
+import { useSelector } from "react-redux";
 
-  const populateTripsData = () => {
-    axios
-      .get("api/Trips/getAll")
-      .then((result) => {
-        const response = result.data;
-        setState({ trips: response, loading: false, failed: false, error: "" });
-      })
-      .catch((err) => {
-        setState({
-          trips: {},
-          loading: false,
-          failed: true,
-          error: "Trips Could not be loaded",
-        });
-      });
-  };
-  useEffect(() => {
-    populateTripsData();
-  }, []);
+export default function Trips() {
+  const state = useSelector((state) => state.trips);
+
+  const history = useHistory();
 
   const handleEdit = (id) => {
     history.push(`/update/${id}`);
@@ -87,7 +65,7 @@ export default function Trips() {
   ) : state.failed ? (
     <p className="text-danger">{state.error} </p>
   ) : (
-    showAllTrips(state.trips)
+    showAllTrips(state.data)
   );
 
   return (

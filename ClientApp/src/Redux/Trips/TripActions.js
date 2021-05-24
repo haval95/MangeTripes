@@ -8,14 +8,14 @@ import {
 
 const getTripSuccess = (payload) => ({ type: GET_ALL_TRIPS_SUCCESS, payload });
 const getTripsRequest = () => ({ type: GET_ALL_TRIPS_REQUEST });
-const getTripsError = (payload) => ({ type: GET_ALL_TRIPS_REQUEST });
+const getTripsError = (payload) => ({ type: GET_ALL_TRIPS_ERROR });
 
 export const getAllTrips = () => (dispatch) => {
   dispatch(getTripsRequest());
   return axios
     .get("api/Trips/getAll")
     .then((result) => {
-      dispatch(getTripsSuccess(result.data));
+      dispatch(getTripSuccess(result.data));
     })
     .catch((error) => {
       dispatch(getTripsError("something went wrong"));
