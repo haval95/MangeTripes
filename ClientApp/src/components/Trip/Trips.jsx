@@ -2,13 +2,29 @@ import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router";
 import axios from "axios";
 export default function Trips() {
-  const [state, setState] = useState({ trips: [], loading: true });
+  const [state, setState] = useState({
+    trips: [],
+    loading: true,
+    error: "",
+    failed: true,
+  });
   const history = useHistory();
+
   const populateTripsData = () => {
-    axios.get("api/Trips/getAll").then((result) => {
-      const response = result.data;
-      setState({ trips: response, loading: false });
-    });
+    axios
+      .get("api/Trips/getAll")
+      .then((result) => {
+        const response = result.data;
+        setState({ trips: response, loading: false, failed: false, error: "" });
+      })
+      .catch((err) => {
+        setState({
+          trips: {},
+          loading: false,
+          failed: true,
+          error: "Trips Could not be loaded",
+        });
+      });
   };
   useEffect(() => {
     populateTripsData();
@@ -66,7 +82,13 @@ export default function Trips() {
     );
   };
 
-  let content = state.loading ? <p>Loading... </p> : showAllTrips(state.trips);
+  let content = state.loading ? (
+    <p>Loading... </p>
+  ) : state.failed ? (
+    <p className="text-danger">{state.error} </p>
+  ) : (
+    showAllTrips(state.trips)
+  );
 
   return (
     <div>
