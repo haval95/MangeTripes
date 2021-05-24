@@ -18,6 +18,10 @@ export default function Trips() {
     history.push(`/update/${id}`);
   };
 
+  const handleDelete = (id) => {
+    history.push(`/delete/${id}`);
+  };
+
   const showAllTrips = (trips) => {
     return (
       <table className="table table-striped">
@@ -46,6 +50,12 @@ export default function Trips() {
                     onClick={() => handleEdit(trip.id)}
                   >
                     Edit
+                  </button>
+                  <button
+                    className="btn btn-danger"
+                    onClick={() => handleDelete(trip.id)}
+                  >
+                    Delete
                   </button>
                 </td>
               </tr>

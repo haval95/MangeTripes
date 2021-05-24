@@ -7,7 +7,7 @@ import "./custom.css";
 import Trips from "./components/Trip/Trips";
 import CreateTrip from "./components/Trip/CreateTrip";
 import UpdateTrip from "./components/Trip/UpdateTrip";
-
+import Delete from "./components/Trip/Delete";
 export default class App extends Component {
   static displayName = App.name;
 
@@ -19,6 +19,7 @@ export default class App extends Component {
         <Route path="/trips" component={Trips} />
         <Route path="/create" component={CreateTrip} />
         <Route path="/update/:id" component={UpdateTrip} />
+        <Route path="/delete/:id" component={Delete} />
       </Layout>
     );
   }
