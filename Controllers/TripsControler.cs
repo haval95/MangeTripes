@@ -31,7 +31,7 @@ namespace Trips.Controllers
         [HttpGet("SingleTrip/{id}")]
         public IActionResult GetTripById(int id){
             var trip=_service.GetTripById(id);
-         
+          
              try{
                   return Ok(trip);
            }catch(Exception e){
