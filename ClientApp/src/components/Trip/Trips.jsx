@@ -1,11 +1,12 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { useHistory } from "react-router";
-import axios from "axios";
+
 import { useSelector } from "react-redux";
+import { useAuth0 } from "@auth0/auth0-react";
 
 export default function Trips() {
+  const { user, isAuthenticated, isLoading } = useAuth0();
   const state = useSelector((state) => state.trips);
-
   const history = useHistory();
 
   const handleEdit = (id) => {
@@ -68,11 +69,27 @@ export default function Trips() {
     showAllTrips(state.data)
   );
 
+  let loggedInUser = isLoading ? (
+    <p>Loading </p>
+  ) : (
+    isAuthenticated && (
+      <div>
+        <img
+          src={user.picture}
+          alt={user.name}
+          className="img-circle img  circle"
+        />
+        <h2>{user.name}</h2>
+        <p>{user.email}</p>
+      </div>
+    )
+  );
+
   return (
     <div>
+      {loggedInUser}
       <h1> All Trips </h1>
       <p>Here you can see all Trips</p>
-
       {content}
     </div>
   );
